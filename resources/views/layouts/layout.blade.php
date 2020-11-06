@@ -23,13 +23,10 @@
 <div class="footer w-100">
     <div class="bg-yellow-300 text-center" style="line-height:100px">頁尾版權</div>
 </div>
-
-
 </div>
 
+<div id="modal"></div>
 
-    
-    
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
