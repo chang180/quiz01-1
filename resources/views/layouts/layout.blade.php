@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
 <body>
-<div class="container">
+<div class="container mx-auto">
 <div class="header w-100">
     <img src="{{asset('/storage/01B01.jpg')}} " alt="" class="w-100">
     </div>

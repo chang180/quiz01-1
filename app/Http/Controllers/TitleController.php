@@ -16,8 +16,61 @@ class TitleController extends Controller
     {
         //
         $all = Title::all();
+        $cols = [
+            '網站標題', '替代文字', '顯示', '刪除', '操作'
+        ];
+
+        $rows = [];
+
+        foreach ($all as $a) {
+            $tmp = [
+                [
+                    'tag' => 'img',
+                    'src' => $a->img,
+                    'style' => 'width:300px;height:30px;'
+                ],
+                [
+                    'tag' => '',
+                    'text' => $a->text
+                ],
+                [
+                    'tag' => 'button',
+                    'type' => 'button',
+                    'btn_color' => 'btn-success',
+                    'action' => 'show',
+                    'id' => $a->id,
+                    'text' => ($a->sh == 1) ? '顯示' : '隱藏'
+                ],
+                [
+                    'tag' => 'button',
+                    'type' => 'button',
+                    'btn_color' => 'btn-danger',
+                    'action' => 'delete',
+                    'id' => $a->id,
+                    'text' => '刪除'
+                ],
+                [
+                    'tag' => 'button',
+                    'type' => 'button',
+                    'btn_color' => 'btn-info',
+                    'action' => 'edit',
+                    'id' => $a->id,
+                    'text' => '編輯'
+                ]
+            ];
+            $rows[] = $tmp;
+        }
+
+        // dd($rows);
+
+        $view = [
+            'header' => '網站標題管理',
+            'module' => 'Title',
+            'cols' => $cols,
+            'rows' => $rows
+        ];
         // dd($all);
-        return view('backend.module', ['header' => '網站標題管理', 'module' => 'Title', 'rows' => $all]);
+        return view('backend.module', $view);
     }
 
     /**
@@ -169,18 +222,16 @@ class TitleController extends Controller
 
         if ($title->sh == 1) {
             $title->sh = 0;
-            $findDefault=Title::where("sh",0)->first();
-            $findDefault->sh=1;
+            $findDefault = Title::where("sh", 0)->first();
+            $findDefault->sh = 1;
             $title->save();
             $findDefault->save();
         } else {
             $title->sh = 1;
-            $findShow=Title::where("sh",1)->first();
-            $findShow->sh=0;
+            $findShow = Title::where("sh", 1)->first();
+            $findShow->sh = 0;
             $title->save();
             $findShow->save();
-        } 
+        }
     }
-
-
 }
