@@ -1,6 +1,9 @@
 <!-- Modal -->
 <form action="{{ $action }}" method="post" enctype="multipart/form-data">
     @csrf
+    @isset($method)
+    @method($method)
+    @endisset
     <div class="modal fade" id="baseModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="ModalCenter" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -20,6 +23,9 @@
                                     @switch($row['tag'])
                                         @case('input')
                                         @include('layouts.input',$row)
+                                        @break
+                                        @case('img')
+                                        @include('layouts.img',$row)
                                         @break
                                         @case('textarea')
                                         @break

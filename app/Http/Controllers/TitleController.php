@@ -92,6 +92,36 @@ class TitleController extends Controller
     public function edit($id)
     {
         //
+        $title = Title::find($id);
+        $view = [
+            'action' => '/admin/title/' . $id,
+            'method' => 'patch',
+            'modal_header' => '編輯網站標題資料',
+            'modal_body' => [
+                [
+                    'label' => '目前標題區圖片',
+                    'tag' => 'img',
+                    'src' => $title->img,
+                    'style' => 'width:300px;height:30px;',
+                    // 'class' => 'modal_img'
+                ],
+
+                [
+                    'label' => '更換標題區圖片',
+                    'tag' => 'input',
+                    'type' => 'file',
+                    'name' => 'img'
+                ],
+                [
+                    'label' => '標題區替代文字',
+                    'tag' => 'input',
+                    'type' => 'text',
+                    'name' => 'text',
+                    'value' => $title->text
+                ]
+            ]
+        ];
+        return view('modals.base_modal', $view);
     }
 
     /**
@@ -104,6 +134,20 @@ class TitleController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $title = Title::find($id);
+        if ($request->hasfile('img') && $request->file('img')->isValid()) {
+            $filename = $request->file('img')->getClientOriginalName();
+            $request->file('img')->storeAs('public', $filename);
+            $title->img = $filename;
+        }
+
+        if ($title->text !== $request->input('text')) {
+            $text = $request->input('text');
+            $title->text = $text;
+        }
+
+        $title->save();
+        return redirect('/admin/title');
     }
 
     /**
@@ -115,5 +159,28 @@ class TitleController extends Controller
     public function destroy($id)
     {
         //
+        Title::destroy($id);
     }
+
+    //改變資料的顯示狀態
+    public function display($id)
+    {
+        $title = Title::find($id);
+
+        if ($title->sh == 1) {
+            $title->sh = 0;
+            $findDefault=Title::where("sh",0)->first();
+            $findDefault->sh=1;
+            $title->save();
+            $findDefault->save();
+        } else {
+            $title->sh = 1;
+            $findShow=Title::where("sh",1)->first();
+            $findShow->sh=0;
+            $title->save();
+            $findShow->save();
+        } 
+    }
+
+
 }
