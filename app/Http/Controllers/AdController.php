@@ -53,14 +53,14 @@ class AdController extends Controller
 
         // dd($rows);
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '動態廣告文字管理',
             'module' => 'Ad',
             'cols' => $cols,
             'rows' => $rows
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     public function create()

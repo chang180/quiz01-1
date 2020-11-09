@@ -55,14 +55,14 @@ class MvimController extends Controller
 
         // dd($rows);
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '動畫圖片管理',
             'module' => 'Mvim',
             'cols' => $cols,
             'rows' => $rows
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     /**

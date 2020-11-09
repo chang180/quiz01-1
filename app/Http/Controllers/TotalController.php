@@ -29,14 +29,14 @@ class TotalController extends Controller
             ]
         ];
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '進站總人數管理',
             'module' => 'Total',
             'col' => $col,
             'row' => $row
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     public function edit($id)

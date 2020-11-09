@@ -55,14 +55,14 @@ class ImageController extends Controller
 
         // dd($rows);
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '校園映像圖片管理',
             'module' => 'Image',
             'cols' => $cols,
             'rows' => $rows
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     /**

@@ -49,15 +49,15 @@ class SubMenuController extends Controller
 
         // dd($rows);
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '次選單管理',
             'module' => 'SubMenu',
             'cols' => $cols,
             'rows' => $rows,
             'menu_id'=>$menu_id
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     /**

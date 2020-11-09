@@ -69,14 +69,14 @@ class MenuController extends Controller
 
         // dd($rows);
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '選單管理',
             'module' => 'Menu',
             'cols' => $cols,
             'rows' => $rows
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     /**

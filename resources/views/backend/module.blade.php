@@ -106,14 +106,35 @@
             $.ajax({
                 type: 'patch',
                 url: `/admin/{{ strtolower($module) }}/sh/${id}`,
+                @if($module=='Title')
+                success: function(img) {
+                    
+                    if (_this.text() == '顯示') {
+                        $(".show").each((idx,dom)=>{
+                            if($(dom).text=='隱藏'){
+                                $(dom).text('顯示')
+                                return false
+                            }
+                        })
+                        _this.text('顯藏')
+                    } else {
+                        $(".show").text("隱藏")
+                        _this.text('顯示')
+                    }
+                    $(".header img").attr("src","/storage/"+img);
+                }
+
+                @else
                 success: function() {
                     // location.reload()
+                    
                     if (_this.text() == '顯示') {
                         _this.text('顯藏')
                     } else {
                         _this.text('顯示')
                     }
                 }
+                @endif
             })
         })
 

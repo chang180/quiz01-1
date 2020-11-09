@@ -15,6 +15,7 @@ class TitleController extends Controller
     public function index()
     {
         //
+        // dd($this->view);
         $all = Title::all();
         $cols = [
             '網站標題', '替代文字', '顯示', '刪除', '操作'
@@ -63,14 +64,16 @@ class TitleController extends Controller
 
         // dd($rows);
 
-        $view = [
+
+        $this->view= array_merge($this->view,[
             'header' => '網站標題管理',
             'module' => 'Title',
             'cols' => $cols,
-            'rows' => $rows
-        ];
+            'rows' => $rows,
+        ]);
+        // dd($this->view);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     /**
@@ -233,5 +236,7 @@ class TitleController extends Controller
             $title->save();
             $findShow->save();
         }
+$img=Title::where("sh",1)->first()->img;
+        return $img;
     }
 }

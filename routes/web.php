@@ -11,6 +11,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SubMenuController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,8 @@ use App\Http\Controllers\SubMenuController;
 //     return view('home');
 // });
 
-Route::view('/', 'home');
+// Route::view('/', 'home');
+Route::get('/',[HomeController::class,'index']);
 
 Route::redirect('/admin','/admin/title');
 // Route::view('/admin','backend.module',['header'=>'網站標題管理','module'=>'Title']);

@@ -51,14 +51,14 @@ class AdminController extends Controller
 
         // dd($rows);
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '管理者帳號管理',
             'module' => 'Admin',
             'cols' => $cols,
             'rows' => $rows
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     /**

@@ -30,14 +30,14 @@ class BottomController extends Controller
             ]
         ];
 
-        $view = [
+        $this->view = array_merge($this->view,[
             'header' => '頁尾版權管理',
             'module' => 'Bottom',
             'col' => $col,
             'row' => $row
-        ];
+        ]);
         // dd($all);
-        return view('backend.module', $view);
+        return view('backend.module', $this->view);
     }
 
     public function edit($id)

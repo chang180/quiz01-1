@@ -16,13 +16,13 @@
 <body>
 <div class="container mx-auto">
 <div class="header w-100">
-    <img src="{{asset('/storage/01B01.jpg')}} " alt="" class="w-100">
+    <img src="{{asset('storage/'.$title->img)??''}} " title="{{$title->text??''}}" class="w-100">
     </div>
 <div class="main d-flex" style="height:568px;">
     @yield("main")
 </div>
 <div class="footer w-100">
-    <div class="bg-yellow-300 text-center" style="line-height:100px">頁尾版權</div>
+    <div class="bg-yellow-300 text-center" style="line-height:100px">{{$bottom}}</div>
 </div>
 </div>
 
