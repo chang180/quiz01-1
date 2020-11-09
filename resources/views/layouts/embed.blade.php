@@ -1,0 +1,1 @@
+<embed src="{{asset('storage/'.$src)}}" style="{{$style??''}}">

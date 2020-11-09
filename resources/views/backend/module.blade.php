@@ -32,11 +32,14 @@
                                         @case('img')
                                         @include('layouts.img',$item)
                                         @break
+                                        @case('embed')
+                                        @include('layouts.embed',$item)
+                                        @break
                                         @case('button')
                                         @include('layouts.button',$item)
                                         @break
                                         @default
-                                        {{ $item['text'] }}
+                                        {!! nl2br($item['text']) !!}
                                     @endswitch
                                 </td>
                             @endforeach
@@ -63,7 +66,7 @@
             }
         });
         $('#addRow').on('click', function() {
-            $.get("/modals/add{{ $module }}", function(modal) {
+            $.get("/modals/add{{$module}}/{{$menu_id??''}}", function(modal) {
                 $("#modal").html(modal)
                 $("#baseModal").modal("show")
                 $("#baseModal").on("hidden.bs.modal", function() {
@@ -87,24 +90,36 @@
 
         $(".delete").on('click', function() {
             let id = $(this).data('id')
+            let _this = $(this)
             $.ajax({
                 type: 'delete',
                 url: `/admin/{{ strtolower($module) }}/${id}`,
                 success: function() {
-                    location.reload()
+                    _this.parents('tr').remove()
                 },
             })
         })
 
         $(".show").on('click', function() {
             let id = $(this).data('id')
+            let _this = $(this)
             $.ajax({
                 type: 'patch',
                 url: `/admin/{{ strtolower($module) }}/sh/${id}`,
                 success: function() {
-                    location.reload()
+                    // location.reload()
+                    if (_this.text() == '顯示') {
+                        _this.text('顯藏')
+                    } else {
+                        _this.text('顯示')
+                    }
                 }
             })
+        })
+
+        $(".sub").on('click', function() {
+            let id = $(this).data('id')
+            location.href = `/admin/submenu/${id}`
         })
 
     </script>

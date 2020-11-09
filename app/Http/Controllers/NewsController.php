@@ -22,7 +22,7 @@ class NewsController extends Controller
             $tmp = [
                 [
                     'tag' => '',
-                    'text' => $a->text,
+                    'text' => mb_substr($a->text,0,50,'utf8'),
                 ],
                 [
                     'tag' => 'button',
@@ -74,12 +74,12 @@ class NewsController extends Controller
         //
         $view = [
             'action' => '/admin/news',
-            'modal_header' => '新增最新消息',
+            'modal_header' => '新增最新消息內容',
             'modal_body' => [
                 [
-                    'label' => '最新消息',
-                    'tag' => 'input',
-                    'type' => 'text',
+                    'label' => '最新消息內容',
+                    'tag' => 'textarea',
+                    'style' => 'width:200px;height:100px',
                     'name' => 'text'
             ]
             ]
@@ -128,13 +128,14 @@ class NewsController extends Controller
         $view = [
             'action' => '/admin/news/' . $id,
             'method' => 'patch',
-            'modal_header' => '編輯最新消息',
+            'modal_header' => '編輯最新消息內容',
             'modal_body' => [
                 [
-                    'label' => '更換最新消息',
-                    'tag' => 'input',
-                    'type' => 'text',
-                    'name' => 'text'
+                    'label' => '最新消息內容',
+                    'tag' => 'textarea',
+                    'style'=>'width:200px,height:100px',
+                    'name' => 'text',
+                    'value' => $news->text
                 ]
             ]
         ];

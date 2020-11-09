@@ -21,7 +21,7 @@ class MvimController extends Controller
         foreach ($all as $a) {
             $tmp = [
                 [
-                    'tag' => 'img',
+                    'tag' => 'embed',
                     'src' => $a->img,
                     'style' => 'width:100px;height:68px;'
                 ],
@@ -137,7 +137,7 @@ class MvimController extends Controller
             'modal_body' => [
                 [
                     'label' => '目前圖片',
-                    'tag' => 'img',
+                    'tag' => 'embed',
                     'src' => $mvim->img,
                     'style' => 'width:100px;height:68px;',
                     // 'class' => 'modal_img'

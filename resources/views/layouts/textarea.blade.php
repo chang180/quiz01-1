@@ -1,0 +1,1 @@
+<textarea name="{{$name}}" style="{{$style??''}} ">{{$value??''}} </textarea>

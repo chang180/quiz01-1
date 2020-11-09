@@ -27,7 +27,11 @@
                                         @case('img')
                                         @include('layouts.img',$row)
                                         @break
+                                        @case('embed')
+                                        @include('layouts.embed',$row)
+                                        @break
                                         @case('textarea')
+                                        @include('layouts.textarea',$row)
                                         @break
                                     @endswitch
                                 </td>
