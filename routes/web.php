@@ -30,6 +30,8 @@ use App\Http\Controllers\HomeController;
 
 // Route::view('/', 'home');
 Route::get('/',[HomeController::class,'index']);
+Route::get('/news',[NewsController::class,'list']);
+Route::get('/login',[AdminController::class,'showLoginForm']);
 
 Route::redirect('/admin','/admin/title');
 // Route::view('/admin','backend.module',['header'=>'網站標題管理','module'=>'Title']);
