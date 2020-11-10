@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\SubMenu;
 use App\Models\Image;
+use App\Models\Ad;
+use App\Models\Mvim;
+use App\Models\News;
 
 
 class HomeController extends Controller
@@ -17,7 +20,32 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
+        $this->sideBar();
+   
+        $mvims = Mvim::where('sh', 1)->get();
+$news=News::where('sh',1)->get()->filter(function($val,$idx){
+if($idx>4){
+$this->view['more']='/news';
+}else{
+    return $val;
+}
+});
+// dd($news);
+
+      
+        $this->view['mvims'] = $mvims;
+        $this->view['news']=$news;
+
+
+        return view('main', $this->view);
+    }
+
+    //把畫面両側功能的程式拉出来再做一個方法給別的controller継承
+    protected function sideBar()
+    {
+        $ads = implode('　　', Ad::where('sh', 1)->get()->pluck('text')->all());
+        $this->view['ads'] = $ads;
+        
         $menus = Menu::where('sh', 1)->get();
         // foreach($menus as $key=>$menu){
         //     $menu->subs=$menu->subs;
@@ -29,75 +57,7 @@ class HomeController extends Controller
         // dd($menus);
         $this->view['menus'] = $menus;
 
-$images=Image::where('sh',1)->get();
-$this->view['images']=$images;
-
-        return view('main', $this->view);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $images = Image::where('sh', 1)->get();
+        $this->view['images'] = $images;
     }
 }

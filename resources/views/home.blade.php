@@ -4,7 +4,7 @@
     <div class="menu col-3">
         <div class="text-center py-2 border-bottom my-1">主選單區</div>
         @isset($menus)
-            <ul class="list-group text-center">
+            <ul class="list-group text-center h-75">
                 @foreach ($menus as $menu)
                     <li class="list-group-item list-group-action py-1 bg-warning menu">
                         <a href="{{ $menu->href }}">{{ $menu->text }}</a>
@@ -20,8 +20,12 @@
                 @endforeach
             </ul>
         @endisset
+        <div class="viewer text-center">
+            進站総人数：{{ $total }}
+        </div>
     </div>
     <div class="main col-6">
+        <marquee>{{ $ads ?? '' }}</marquee>
         @yield("center")
     </div>
     <div class="right col-3">
@@ -39,6 +43,12 @@
 
 @section('script')
     <script>
+        $(".new").hover(function() {
+            $(this).children('.border').removeClass('d-none')
+        }, function() {
+            $(this).children('.border').addClass('d-none')
+        })
+
         $(".menu").hover(function() {
             $(this).children(".subs").removeClass("d-none");
         }, function() {
@@ -64,11 +74,22 @@
                     break
             }
             $(".img").each((idx, dom) => {
-                if (idx >= p&& idx <= p + 2) {
+                if (idx >= p && idx <= p + 2) {
                     $(dom).show()
                 }
             })
         })
+
+        $(".mv").eq(0).removeClass('d-none')
+        let mvNum = $(".mv").length
+        let now = 0
+        setInterval(() => {
+            $(".mv").eq(now).addClass('d-none')
+            now++
+            if (now == mvNum) now = 0
+            $(".mv").eq(now).removeClass('d-none')
+
+        }, 3000);
 
     </script>
 @endsection
