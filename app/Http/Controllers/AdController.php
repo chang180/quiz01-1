@@ -10,7 +10,7 @@ class AdController extends Controller
     public function index()
     {
         //
-        $all = Ad::all();
+        $all = Ad::paginate(5);
         $cols = [
             '動態文字廣告', '顯示', '刪除', '操作'
         ];
@@ -57,7 +57,8 @@ class AdController extends Controller
             'header' => '動態廣告文字管理',
             'module' => 'Ad',
             'cols' => $cols,
-            'rows' => $rows
+            'rows' => $rows,
+            'all' => $all
         ]);
         // dd($all);
         return view('backend.module', $this->view);
@@ -74,7 +75,7 @@ class AdController extends Controller
                     'label' => '動態廣告文字',
                     'tag' => 'input',
                     'type' => 'text',
-                    'name' => 'text'
+                    'name' => 'text',
                 ]
             ]
         ];

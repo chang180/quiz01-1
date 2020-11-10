@@ -11,7 +11,7 @@ class ImageController extends Controller
     public function index()
     {
         //
-        $all = Image::all();
+        $all = Image::paginate(3);
         $cols = [
             '校園映像圖片', '顯示', '刪除', '操作'
         ];
@@ -59,7 +59,8 @@ class ImageController extends Controller
             'header' => '校園映像圖片管理',
             'module' => 'Image',
             'cols' => $cols,
-            'rows' => $rows
+            'rows' => $rows,
+            'all' => $all
         ]);
         // dd($all);
         return view('backend.module', $this->view);

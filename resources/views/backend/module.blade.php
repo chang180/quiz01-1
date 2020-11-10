@@ -53,6 +53,11 @@
                         <td>@include('layouts.button',$row[1])</td>
                     </tr>
                 @endif
+                @isset($all)
+                <td>
+                    {{$all->links()}}
+                </td>
+                @endisset
             </table>
         </div>
     </div>

@@ -8,15 +8,17 @@ use App\Models\News;
 class NewsController extends HomeController
 {
     //
-public function list(){
-parent::sideBar();
-    return view('news',$this->view);
-}
+    public function list()
+    {
+        parent::sideBar();
+        $this->view['news'] = News::where('sh', 1)->paginate(5);
+        return view('news', $this->view);
+    }
 
     public function index()
     {
         //
-        $all = News::all();
+        $all = News::paginate(3);
         $cols = [
             '最新消息', '顯示', '刪除', '操作'
         ];
@@ -27,7 +29,7 @@ parent::sideBar();
             $tmp = [
                 [
                     'tag' => '',
-                    'text' => mb_substr($a->text,0,50,'utf8'),
+                    'text' => mb_substr($a->text, 0, 50, 'utf8'),
                 ],
                 [
                     'tag' => 'button',
@@ -59,11 +61,12 @@ parent::sideBar();
 
         // dd($rows);
 
-        $this->view = array_merge($this->view,[
+        $this->view = array_merge($this->view, [
             'header' => '最新消息管理',
             'module' => 'News',
             'cols' => $cols,
-            'rows' => $rows
+            'rows' => $rows,
+            'all' =>$all
         ]);
         // dd($all);
         return view('backend.module', $this->view);
@@ -86,7 +89,7 @@ parent::sideBar();
                     'tag' => 'textarea',
                     'style' => 'width:200px;height:100px',
                     'name' => 'text'
-            ]
+                ]
             ]
         ];
         return view('modals.base_modal', $view);
@@ -102,10 +105,10 @@ parent::sideBar();
     {
         //
         // dd($request);
-            $news = new News;
+        $news = new News;
 
-            $news->text = $request->input('text');
-            $news->save();
+        $news->text = $request->input('text');
+        $news->save();
         return redirect('/admin/news');
     }
 
@@ -138,7 +141,7 @@ parent::sideBar();
                 [
                     'label' => '最新消息內容',
                     'tag' => 'textarea',
-                    'style'=>'width:200px,height:100px',
+                    'style' => 'width:200px,height:100px',
                     'name' => 'text',
                     'value' => $news->text
                 ]
@@ -184,7 +187,7 @@ parent::sideBar();
     {
         $news = News::find($id);
 
-        $news->sh=!($news->sh);
+        $news->sh = !($news->sh);
         $news->save();
     }
 }
