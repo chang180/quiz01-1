@@ -4,13 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
+use Hash;
 
 class AdminController extends HomeController
 {
     //
-public function showLoginForm(){
-    parent::sideBar();
-    return view('login',$this->view);
+    public function showLoginForm()
+    {
+        parent::sideBar();
+        return view('login', $this->view);
+    }
+
+    public function login(Request $request)
+    {
+        // $acc = $request->input('acc');
+        // $pw = $request->input('pw');
+        // $chk = Admin::where('acc', $acc)->where('pw', $pw)->count();
+        // if ($chk) {
+        //     return redirect('/admin');
+        // } else {
+
+        //     return redirect('/login')->with('error', '帳號或密碼錯誤');
+        // }
+
+        $user = [
+            'acc' => $request->input('acc'),
+            'password' => $request->input('pw')
+        ];
+        // dd($user);
+
+        if(Auth::attempt($user)){
+            return redirect('/admin');
+        }else{
+            return redirect('/login')->with('error','帳號或密碼錯誤');
+        }
+    }
+
+public function logout(){
+    Auth::logout();
+    return redirect("/login");
 }
 
     public function index()
@@ -31,8 +64,8 @@ public function showLoginForm(){
                 ],
                 [
                     'tag' => '',
-                    'type'=>'password',
-                    'text' => str_repeat("*",strlen($a->pw))
+                    'type' => 'password',
+                    'text' => str_repeat("*", strlen($a->pw))
                 ],
                 [
                     'tag' => 'button',
@@ -56,7 +89,7 @@ public function showLoginForm(){
 
         // dd($rows);
 
-        $this->view = array_merge($this->view,[
+        $this->view = array_merge($this->view, [
             'header' => '管理者帳號管理',
             'module' => 'Admin',
             'cols' => $cols,
@@ -105,13 +138,13 @@ public function showLoginForm(){
     {
         //
         // dd($request);
-            $admin = new Admin;
-            $acc = $request->input('acc');
-            $pw = $request->input('pw');
+        $admin = new Admin;
+        $acc = $request->input('acc');
+        $pw = Hash::make($request->input('pw'));
 
-            $admin->acc = $acc;
-            $admin->pw = $pw;
-            $admin->save();
+        $admin->acc = $acc;
+        $admin->pw = $pw;
+        $admin->save();
         return redirect('/admin/admin');
     }
 
@@ -166,7 +199,7 @@ public function showLoginForm(){
         $admin = Admin::find($id);
 
         if ($admin->pw !== $request->input('pw')) {
-            $admin->pw = $request->input('pw');
+            $admin->pw = Hash::make($request->input('pw'));
         }
 
         $admin->save();
@@ -184,5 +217,4 @@ public function showLoginForm(){
         //
         Admin::destroy($id);
     }
-
 }
