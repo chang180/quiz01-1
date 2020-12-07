@@ -11,7 +11,6 @@ use App\Models\Mvim;
 use App\Models\News;
 use Auth;
 
-
 class HomeController extends Controller
 {
     /**
@@ -22,20 +21,20 @@ class HomeController extends Controller
     public function index()
     {
         $this->sideBar();
-   
-        $mvims = Mvim::where('sh', 1)->get();
-$news=News::where('sh',1)->get()->filter(function($val,$idx){
-if($idx>4){
-$this->view['more']='/news';
-}else{
-    return $val;
-}
-});
-// dd($news);
 
-      
+        $mvims = Mvim::where('sh', 1)->get();
+        $news = News::where('sh', 1)->get()->filter(function ($val, $idx) {
+            if ($idx > 4) {
+                $this->view['more'] = '/news';
+            } else {
+                return $val;
+            }
+        });
+        // dd($news);
+
+
         $this->view['mvims'] = $mvims;
-        $this->view['news']=$news;
+        $this->view['news'] = $news;
 
 
         return view('main', $this->view);
@@ -46,7 +45,7 @@ $this->view['more']='/news';
     {
         $ads = implode('　　', Ad::where('sh', 1)->get()->pluck('text')->all());
         $this->view['ads'] = $ads;
-        
+
         $menus = Menu::where('sh', 1)->get();
         // foreach($menus as $key=>$menu){
         //     $menu->subs=$menu->subs;
@@ -57,9 +56,11 @@ $this->view['more']='/news';
         }
 
 
-        if(Auth::user()){
-            $this->view['user']=Auth::user();
+        if (Auth::user()) {
+            $this->view['user'] = Auth::user();
         }
+
+        
         // dd($menus);
         $this->view['menus'] = $menus;
 

@@ -19,7 +19,18 @@ class Controller extends BaseController
     public function __construct()
     {
         $this->view['title'] = Title::where('sh', 1)->first();
-        $this->view['total'] = Total::first()->total;
+        if (!session()->has('visiter')) {
+            $total = Total::first();
+            $total->total++;
+            $total->save();
+            $this->view['total'] = $total->total;
+            // session(['visiter'=>$total->total]);
+            session()->put('visiter',$total->total);
+            // dd($total->total);
+        }else{
+            $this->view['total'] = Total::first()->total;
+            
+        }
         $this->view['bottom'] = Bottom::first()->bottom;
     }
 }
