@@ -31,20 +31,12 @@ use App\Http\Controllers\HomeController;
 // Route::view('/', 'home');
 Route::get('/',[HomeController::class,'index']);
 Route::get('/news',[NewsController::class,'list']);
-Route::get('/login',[AdminController::class,'showLoginForm']);
+Route::get('/login',[AdminController::class,'showLoginForm'])->name('login');
 Route::post('/login',[AdminController::class,'login']);
 Route::get('/logout',[AdminController::class,'logout']);
 
 Route::redirect('/admin','/admin/title');
-// Route::view('/admin','backend.module',['header'=>'網站標題管理','module'=>'Title']);
-// Route::view('/admin/title', 'backend.title');
-// Route::prefix('/admin')->group(function(){
-//     Route::view('/','backend.title');
-//     Route::view('/title','backend.title');
-//     Route::view('/ad','backend.ad');
-// });
-
-Route::prefix('admin')->group(function(){
+Route::prefix('admin')->middleware('auth')->group(function(){
     //get
     Route::get('/title',[TitleController::class,'index']);
     Route::get('/ad',[AdController::class,'index']);

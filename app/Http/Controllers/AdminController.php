@@ -18,15 +18,6 @@ class AdminController extends HomeController
 
     public function login(Request $request)
     {
-        // $acc = $request->input('acc');
-        // $pw = $request->input('pw');
-        // $chk = Admin::where('acc', $acc)->where('pw', $pw)->count();
-        // if ($chk) {
-        //     return redirect('/admin');
-        // } else {
-
-        //     return redirect('/login')->with('error', '帳號或密碼錯誤');
-        // }
 
         $user = [
             'acc' => $request->input('acc'),
@@ -34,17 +25,18 @@ class AdminController extends HomeController
         ];
         // dd($user);
 
-        if(Auth::attempt($user)){
+        if (Auth::attempt($user)) {
             return redirect('/admin');
-        }else{
-            return redirect('/login')->with('error','帳號或密碼錯誤');
+        } else {
+            return redirect('/login')->with('error', '帳號或密碼錯誤');
         }
     }
 
-public function logout(){
-    Auth::logout();
-    return redirect("/login");
-}
+
+    public function logout(){
+        Auth::logout();
+        return redirect('/login');
+    }
 
     public function index()
     {

@@ -9,6 +9,7 @@ use App\Models\Image;
 use App\Models\Ad;
 use App\Models\Mvim;
 use App\Models\News;
+use Auth;
 
 
 class HomeController extends Controller
@@ -53,6 +54,11 @@ $this->view['more']='/news';
         // }
         foreach ($menus as $menu) {
             $menu->subs = $menu->subs;
+        }
+
+
+        if(Auth::user()){
+            $this->view['user']=Auth::user();
         }
         // dd($menus);
         $this->view['menus'] = $menus;
