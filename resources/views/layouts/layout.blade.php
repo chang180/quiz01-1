@@ -7,22 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>校園科技大學校園資訊系統</title>
-    
+    <script src="https://unpkg.com/vue@next"></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.6/tailwind.css' />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
-<body>
+<body id="app">
 <div class="container mx-auto">
 <div class="header w-100">
-    <a href="/"><img src="{{asset('storage/'.$title->img)??''}} " title="{{$title->text??''}}" class="w-100"></a>
+<a href="/" :title="title"><img :src="titleImg" class="w-100"></a>
     </div>
 <div class="main d-flex" style="height:568px;">
     @yield("main")
 </div>
 <div class="footer w-100">
-    <div class="bg-yellow-300 text-center" style="line-height:100px">{{$bottom}}</div>
+    <div class="bg-yellow-300 text-center" style="line-height:100px">@{{bottom}}</div>
 </div>
 </div>
 

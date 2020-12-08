@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="main col-6">
-        <marquee>{{ $ads ?? '' }}</marquee>
+    <marquee>@{{adstr}}</marquee>
         @yield("center")
     </div>
     <div class="right col-3">
@@ -35,7 +35,7 @@
         @auth
         <a href="/admin" class="btn btn-success py-3 w-100 my-2">返回管理({{$user->acc}}) </a>
         @endauth
-        <div class="text-center py-2 border-bottom my-1">主選單區</div>
+        <div class="text-center py-2 border-bottom my-1">主選單區@{{wtf}} </div>
         <div class="up"></div>
         @isset($images)
             @foreach ($images as $img)
@@ -95,6 +95,19 @@
             $(".mv").eq(now).removeClass('d-none')
 
         }, 3000);
+
+        const app={
+            data(){
+                const adstr= '{{$ads}}'
+                const bottom='{{$bottom}}'
+                const titleImg="{{asset('storage/'.$title->img)}}"
+                const title='{{$title->text}}'
+                return{
+                    adstr,title,titleImg,bottom
+                }
+            }
+        }
+Vue.createApp(app).mount('#app')
 
     </script>
 @endsection
