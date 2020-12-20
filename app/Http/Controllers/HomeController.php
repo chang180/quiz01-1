@@ -53,6 +53,7 @@ class HomeController extends Controller
         // }
         foreach ($menus as $menu) {
             $menu->subs = $menu->subs;
+            $menu->show=false;
         }
 
 

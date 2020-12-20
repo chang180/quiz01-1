@@ -3,39 +3,35 @@
 @section('main')
     <div class="menu col-3">
         <div class="text-center py-2 border-bottom my-1">主選單區</div>
-        @isset($menus)
-            <ul class="list-group text-center h-75">
-                @foreach ($menus as $menu)
-                    <li class="list-group-item list-group-action py-1 bg-warning menu">
-                        <a href="{{ $menu->href }}">{{ $menu->text }}</a>
-                        @isset($menu->subs)
-                            <ul class="list-group subs d-none offset-4 w-100">
-                                @foreach ($menu->subs as $sub)
-                                    <li class="list-group-item list-group-action py-1 bg-success"><a class="text-white"
-                                            href="{{ $sub->href }}">{{ $sub->text }}</a></li>
-                                @endforeach
-                            </ul>
-                        @endisset
+        <ul class="list-group">
+            <li class="list-group-item list-group-action py-1 bg-warning menu" v-for="menu of menus" @mouseover='menu.show=true' @mouseleave='menu.show=false'>
+                <a :href="menu.href">
+                    @{{ menu . text }}
+                </a>
+                <ul class="list-group subs offset-4 w-100" v-if="menu.subs.length>0" v-show="menu.show" >
+                    <li class="list-group-item list-group-action py-1 bg-success" v-for="sub of menu.subs">
+                        <a class="text-white" :href="sub.href">@{{ sub.text }} </a>
                     </li>
-                @endforeach
-            </ul>
-        @endisset
+                </ul>
+            </li>
+        </ul>
+
         <div class="viewer text-center">
-            進站総人数：{{ $total }}
+            進站總人數：@{{ total }}
         </div>
     </div>
     <div class="main col-6">
-    <marquee>@{{adstr}}</marquee>
+        <marquee>@{{ adstr }}</marquee>
         @yield("center")
     </div>
     <div class="right col-3">
         @guest
-        <a href="/login" class="btn btn-primary py-3 w-100 my-2">管理登入</a>
+            <a href="/login" class="btn btn-primary py-3 w-100 my-2">管理登入</a>
         @endguest
         @auth
-        <a href="/admin" class="btn btn-success py-3 w-100 my-2">返回管理({{$user->acc}}) </a>
+            <a href="/admin" class="btn btn-success py-3 w-100 my-2">返回管理({{ $user->acc }}) </a>
         @endauth
-        <div class="text-center py-2 border-bottom my-1">主選單區@{{wtf}} </div>
+        <div class="text-center py-2 border-bottom my-1">主選單區@{{ wtf }} </div>
         <div class="up"></div>
         @isset($images)
             @foreach ($images as $img)
@@ -48,6 +44,8 @@
 
 @section('script')
     <script>
+
+
         $(".new").hover(function() {
             $(this).children('.border').removeClass('d-none')
         }, function() {
@@ -96,18 +94,25 @@
 
         }, 3000);
 
-        const app={
-            data(){
-                const adstr= '{{$ads}}'
-                const bottom='{{$bottom}}'
-                const titleImg="{{asset('storage/'.$title->img)}}"
-                const title='{{$title->text}}'
-                return{
-                    adstr,title,titleImg,bottom
+        const app = {
+            data() {
+                const adstr = '{{ $ads }}'
+                const bottom = '{{ $bottom }}'
+                const titleImg = "{{ asset('storage/' . $title->img) }}"
+                const title = '{{ $title->text }}'
+                const total = '{{ $total }}'
+                const menus = JSON.parse('{!!  $menus !!}')
+                return {
+                    adstr,
+                    title,
+                    titleImg,
+                    bottom,
+                    total,
+                    menus
                 }
             }
         }
-Vue.createApp(app).mount('#app')
+        Vue.createApp(app).mount('#app')     
 
     </script>
 @endsection
