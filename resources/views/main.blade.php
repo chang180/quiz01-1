@@ -14,7 +14,7 @@
                     @{{ news.short }}
                     <div class="border border-dark rounded-shadow text-white offset-4 w-75 bg-secondary text-5 position-absolute"
                         style="z-index:1" v-show="news.show">
-                        <pre class="text-white">@{{ news.text }}</pre>
+                        <pre class="text-white" v-html='news.text'></pre>
                     </div>
                 </li>
         </ul>

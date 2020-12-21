@@ -41,18 +41,6 @@
 
 @section('script')
     <script>
-
-        // $(".mv").eq(0).removeClass('d-none')
-        // let mvNum = $(".mv").length
-        // let now = 0
-        // setInterval(() => {
-        //     $(".mv").eq(now).addClass('d-none')
-        //     now++
-        //     if (now == mvNum) now = 0
-        //     $(".mv").eq(now).removeClass('d-none')
-
-        // }, 3000);
-
         const app = {
             data() {
                 const adstr = '{{ $ads }}'
@@ -60,12 +48,13 @@
                 const titleImg = "{{ asset('storage/' . $title->img) }}"
                 const title = '{{ $title->text }}'
                 const total = '{{ $total }}'
-                const menus = JSON.parse('{!! $menus !!}')
-                const images = JSON.parse('{!! $images !!}')
+                const menus = JSON.parse('{!!  $menus !!}')
+                const images = JSON.parse('{!!  $images !!}')
                 const ip = 0
-                const mvims = JSON.parse('{!! $mvims !!} ')
-                const newss=JSON.parse('{!! $news !!}')
-                const more='{{$more??''}}'
+                const mvims = JSON.parse('{!!  $mvims !!} ')
+                const newss = JSON.parse('{!!  $news !!}')
+                const more = '{{ $more ?? '
+                ' }}'
                 return {
                     adstr,
                     title,
