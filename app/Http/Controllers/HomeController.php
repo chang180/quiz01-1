@@ -22,11 +22,18 @@ class HomeController extends Controller
     {
         $this->sideBar();
 
-        $mvims = Mvim::where('sh', 1)->get();
-        $news = News::where('sh', 1)->get()->filter(function ($val, $idx) {
+        $mvims = Mvim::select('id', 'img')->where('sh', 1)->get()->map(function ($val, $idx) {
+            $val->show = ($idx == 0) ? true : false;
+            $val->img = asset("storage/" . $val->img);
+            return $val;
+        });
+        $news = News::select('id', 'text')->where('sh', 1)->get()->filter(function ($val, $idx) {
             if ($idx > 4) {
                 $this->view['more'] = '/news';
             } else {
+                $val->short = mb_substr(str_replace("\r\n", " ", $val->text), 0, 25, 'utf8') . "...";
+                $val->text = str_replace("\r\n", " ", nl2br($val->text));
+                $val->show=false;
                 return $val;
             }
         });
@@ -67,10 +74,10 @@ class HomeController extends Controller
 
         $images = Image::select('id', 'img')->where('sh', 1)->get()->map(function ($val, $idx) {
             $val->img = asset("storage/" . $val->img);
-            if($idx>2){
-                $val->show=false;
-            }else{
-                $val->show=true;
+            if ($idx > 2) {
+                $val->show = false;
+            } else {
+                $val->show = true;
             }
             return $val;
         });

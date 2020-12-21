@@ -41,22 +41,17 @@
 
 @section('script')
     <script>
-        $(".new").hover(function() {
-            $(this).children('.border').removeClass('d-none')
-        }, function() {
-            $(this).children('.border').addClass('d-none')
-        })
 
-        $(".mv").eq(0).removeClass('d-none')
-        let mvNum = $(".mv").length
-        let now = 0
-        setInterval(() => {
-            $(".mv").eq(now).addClass('d-none')
-            now++
-            if (now == mvNum) now = 0
-            $(".mv").eq(now).removeClass('d-none')
+        // $(".mv").eq(0).removeClass('d-none')
+        // let mvNum = $(".mv").length
+        // let now = 0
+        // setInterval(() => {
+        //     $(".mv").eq(now).addClass('d-none')
+        //     now++
+        //     if (now == mvNum) now = 0
+        //     $(".mv").eq(now).removeClass('d-none')
 
-        }, 3000);
+        // }, 3000);
 
         const app = {
             data() {
@@ -65,9 +60,12 @@
                 const titleImg = "{{ asset('storage/' . $title->img) }}"
                 const title = '{{ $title->text }}'
                 const total = '{{ $total }}'
-                const menus = JSON.parse('{!!  $menus !!}')
-                const images = JSON.parse('{!!  $images !!}')
+                const menus = JSON.parse('{!! $menus !!}')
+                const images = JSON.parse('{!! $images !!}')
                 const ip = 0
+                const mvims = JSON.parse('{!! $mvims !!} ')
+                const newss=JSON.parse('{!! $news !!}')
+                const more='{{$more??''}}'
                 return {
                     adstr,
                     title,
@@ -76,7 +74,10 @@
                     total,
                     menus,
                     images,
-                    ip
+                    ip,
+                    mvims,
+                    newss,
+                    more
                 }
             },
             methods: {
@@ -87,20 +88,30 @@
 
                             break
                         case 'down':
-                            this.ip=(this.ip<this.images.length-3)?++this.ip:this.ip
+                            this.ip = (this.ip < this.images.length - 3) ? ++this.ip : this.ip
 
                             break
                     }
-                    this.images.map((img,idx)=>{
-                        if(idx>=this.ip && idx<=this.ip+2){
-                            img.show=true
-                        }else{
-                            img.show=false
+                    this.images.map((img, idx) => {
+                        if (idx >= this.ip && idx <= this.ip + 2) {
+                            img.show = true
+                        } else {
+                            img.show = false
                         }
                         return img
                     })
                 }
             },
+            mounted() {
+                let m = 1
+                setInterval(() => {
+                    this.mvims.map((mv, idx) => {
+                        mv.show = (idx == m) ? true : false
+                        return mv
+                    })
+                    m = (m + 1) % this.mvims.length
+                }, 3000);
+            }
             // mounted(){
             //     this.switchImg('up')
             // }
