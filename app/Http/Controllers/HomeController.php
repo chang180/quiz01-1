@@ -46,14 +46,14 @@ class HomeController extends Controller
         $ads = implode('　　', Ad::where('sh', 1)->get()->pluck('text')->all());
         $this->view['ads'] = $ads;
 
-        $menus = Menu::where('sh', 1)->get();
+        $menus = Menu::select('id', 'text', 'href')->where('sh', 1)->get();
         // foreach($menus as $key=>$menu){
         //     $menu->subs=$menu->subs;
         // $menus[$key]=$menu;
         // }
         foreach ($menus as $menu) {
             $menu->subs = $menu->subs;
-            $menu->show=false;
+            $menu->show = false;
         }
 
 
@@ -61,11 +61,19 @@ class HomeController extends Controller
             $this->view['user'] = Auth::user();
         }
 
-        
+
         // dd($menus);
         $this->view['menus'] = $menus;
 
-        $images = Image::where('sh', 1)->get();
+        $images = Image::select('id', 'img')->where('sh', 1)->get()->map(function ($val, $idx) {
+            $val->img = asset("storage/" . $val->img);
+            if($idx>2){
+                $val->show=false;
+            }else{
+                $val->show=true;
+            }
+            return $val;
+        });
         $this->view['images'] = $images;
     }
 }

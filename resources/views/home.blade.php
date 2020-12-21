@@ -4,13 +4,14 @@
     <div class="menu col-3">
         <div class="text-center py-2 border-bottom my-1">主選單區</div>
         <ul class="list-group">
-            <li class="list-group-item list-group-action py-1 bg-warning menu" v-for="menu of menus" @mouseover='menu.show=true' @mouseleave='menu.show=false'>
+            <li class="list-group-item list-group-action py-1 bg-warning menu" v-for="menu of menus"
+                @mouseover='menu.show=true' @mouseleave='menu.show=false'>
                 <a :href="menu.href">
                     @{{ menu . text }}
                 </a>
-                <ul class="list-group subs offset-4 w-100" v-if="menu.subs.length>0" v-show="menu.show" >
+                <ul class="list-group subs offset-4 w-100" v-if="menu.subs.length>0" v-show="menu.show">
                     <li class="list-group-item list-group-action py-1 bg-success" v-for="sub of menu.subs">
-                        <a class="text-white" :href="sub.href">@{{ sub.text }} </a>
+                        <a class="text-white" :href="sub.href">@{{ sub . text }} </a>
                     </li>
                 </ul>
             </li>
@@ -31,56 +32,19 @@
         @auth
             <a href="/admin" class="btn btn-success py-3 w-100 my-2">返回管理({{ $user->acc }}) </a>
         @endauth
-        <div class="text-center py-2 border-bottom my-1">主選單區@{{ wtf }} </div>
-        <div class="up"></div>
-        @isset($images)
-            @foreach ($images as $img)
-                <div class="img"><img src="{{ asset('storage/' . $img->img) }}" alt=""></div>
-            @endforeach
-        @endisset
-        <div class="down"></div>
+        <div class="text-center py-2 border-bottom my-1">校園映像區@{{ wtf }} </div>
+        <div class="up" @click="switchImg('up')"></div>
+        <div class="img" v-for='img of images' v-show="img.show"><img :src="img.img" alt=""></div>
+        <div class="down" @click="switchImg('down')"></div>
     </div>
 @endsection
 
 @section('script')
     <script>
-
-
         $(".new").hover(function() {
             $(this).children('.border').removeClass('d-none')
         }, function() {
             $(this).children('.border').addClass('d-none')
-        })
-
-        $(".menu").hover(function() {
-            $(this).children(".subs").removeClass("d-none");
-        }, function() {
-            $(this).children(".subs").addClass("d-none");
-        })
-
-        let num = $(".img").length;
-        let p = 0;
-        $(".img").each((idx, dom) => {
-            if (idx < 3) {
-                $(dom).show()
-            }
-        })
-
-        $(".up,.down").on("click", function() {
-            $(".img").hide()
-            switch ($(this).attr('class')) {
-                case 'up':
-                    p = (p > 0) ? --p : p
-                    break;
-                case 'down':
-                    p = (p <= num - 3) ? ++p : p
-                    break
-            }
-            $(".img").each((idx, dom) => {
-                if (idx >= p && idx <= p + 2) {
-                    $(dom).show()
-                }
-            })
         })
 
         $(".mv").eq(0).removeClass('d-none')
@@ -102,17 +66,46 @@
                 const title = '{{ $title->text }}'
                 const total = '{{ $total }}'
                 const menus = JSON.parse('{!!  $menus !!}')
+                const images = JSON.parse('{!!  $images !!}')
+                const ip = 0
                 return {
                     adstr,
                     title,
                     titleImg,
                     bottom,
                     total,
-                    menus
+                    menus,
+                    images,
+                    ip
                 }
-            }
+            },
+            methods: {
+                switchImg(type) {
+                    switch (type) {
+                        case 'up':
+                            this.ip = (this.ip > 0) ? --this.ip : this.ip
+
+                            break
+                        case 'down':
+                            this.ip=(this.ip<this.images.length-3)?++this.ip:this.ip
+
+                            break
+                    }
+                    this.images.map((img,idx)=>{
+                        if(idx>=this.ip && idx<=this.ip+2){
+                            img.show=true
+                        }else{
+                            img.show=false
+                        }
+                        return img
+                    })
+                }
+            },
+            // mounted(){
+            //     this.switchImg('up')
+            // }
         }
-        Vue.createApp(app).mount('#app')     
+        Vue.createApp(app).mount('#app')
 
     </script>
 @endsection
