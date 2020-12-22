@@ -18,7 +18,8 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $this->view['title'] = Title::where('sh', 1)->first();
+        $this->view['title'] = Title::select('id','img','text')->where('sh', 1)->first();
+        $this->view['title']->img=asset('storage/'.$this->view['title']->img);
         if (!session()->has('visiter')) {
             $total = Total::first();
             $total->total++;

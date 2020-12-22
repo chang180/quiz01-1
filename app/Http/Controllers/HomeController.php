@@ -29,11 +29,13 @@ class HomeController extends Controller
         });
         $news = News::select('id', 'text')->where('sh', 1)->get()->filter(function ($val, $idx) {
             if ($idx > 4) {
-                $this->view['more'] = '/news';
+                $this->view['news']['more'] = ['show'=>true,'href'=>'/news'];
             } else {
                 $val->short = mb_substr(str_replace("\r\n", " ", $val->text), 0, 25, 'utf8') . "...";
                 $val->text = str_replace("\r\n", " ", nl2br($val->text));
                 $val->show=false;
+                
+                $this->view['news']['more'] = ['show'=>false];
                 return $val;
             }
         });
@@ -41,7 +43,7 @@ class HomeController extends Controller
 
 
         $this->view['mvims'] = $mvims;
-        $this->view['news'] = $news;
+        $this->view['news']['data'] = $news;
 
 
         return view('main', $this->view);
@@ -51,27 +53,25 @@ class HomeController extends Controller
     protected function sideBar()
     {
         $ads = implode('　　', Ad::where('sh', 1)->get()->pluck('text')->all());
-        $this->view['ads'] = $ads;
-
+        
         $menus = Menu::select('id', 'text', 'href')->where('sh', 1)->get();
         // foreach($menus as $key=>$menu){
-        //     $menu->subs=$menu->subs;
+            //     $menu->subs=$menu->subs;
         // $menus[$key]=$menu;
         // }
         foreach ($menus as $menu) {
             $menu->subs = $menu->subs;
             $menu->show = false;
         }
-
-
+        
+        
         if (Auth::user()) {
             $this->view['user'] = Auth::user();
         }
-
-
+        
+        
         // dd($menus);
-        $this->view['menus'] = $menus;
-
+        
         $images = Image::select('id', 'img')->where('sh', 1)->get()->map(function ($val, $idx) {
             $val->img = asset("storage/" . $val->img);
             if ($idx > 2) {
@@ -81,6 +81,16 @@ class HomeController extends Controller
             }
             return $val;
         });
-        $this->view['images'] = $images;
+        $this->view['ads'] = $ads;
+        $this->view['menus'] = $menus;
+        $this->view['images'] = ['data'=>$images,'page'=>0];
+
+        $this->view['site']=[
+            'ads'=>$ads,
+            'title'=>$this->view['title'],
+            'total'=>$this->view['total'],
+            'bottom'=>$this->view['bottom'],
+        ];
+        // dd($this->view);
     }
 }

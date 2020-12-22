@@ -16,13 +16,13 @@
 <body id="app">
 <div class="container mx-auto">
 <div class="header w-100">
-<a href="/" :title="title"><img :src="titleImg" class="w-100"></a>
+<a href="/" :title="site.title.text"><img :src="site.title.img" class="w-100"></a>
     </div>
 <div class="main d-flex" style="height:568px;">
     @yield("main")
 </div>
 <div class="footer w-100">
-    <div class="bg-yellow-300 text-center" style="line-height:100px">@{{bottom}}</div>
+    <div class="bg-yellow-300 text-center" style="line-height:100px">@{{site.bottom}}</div>
 </div>
 </div>
 
