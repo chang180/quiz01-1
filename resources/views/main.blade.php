@@ -64,7 +64,7 @@
             mounted() {
                 axios.get("/api")
                     .then((res) => {
-                        console.log(res.data)
+                        // console.log(res.data)
                         this.site = res.data.site
                         this.menus = res.data.menus
                         this.images = res.data.images
@@ -85,7 +85,28 @@
             //     this.switchImg('up')
             // }
         }
-        Vue.createApp(app).mount('#app')
+        Vue.createApp(app).component('marquee', {
+            // props: ['text'],
+            template: `
+                                <div class="relative w-100 h-8 overflow-hidden" ref="marquee">
+                                <div class="absolute w-max" ref="content">
+                                <slot></slot>
+                                </div>
+                                </div>            
+                                `,
+            mounted() {
+                let marquee = this.$refs.marquee.offsetWidth
+                let content = this.$refs.content.offsetWidth
+                // console.log(marquee, content)
+                this.$refs.content.style.right=(0-content)+"px"
+                let pos=0-content
+                setInterval(() => {
+                    pos++
+                    this.$refs.content.style.right=pos+"px"
+                    if (pos>=marquee) pos = 0-content
+}, 15);
+            }
+        }).mount('#app')
 
     </script>
 @endsection

@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="main col-6">
-        <marquee>@{{ site.ads }}</marquee>
+        <marquee>@{{site.ads}}</marquee>
         @yield("center")
     </div>
     <div class="right col-3">
