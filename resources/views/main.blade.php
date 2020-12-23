@@ -10,8 +10,8 @@
             <a class="float-right" :href="newss.more.href" v-if="newss.more.show">More...</a>
         </div>
         <ul class="list-group">
-            <li class="list-group-item list-gorup-item-action p-1 new" v-for="news of newss.data" @mouseover="news.show=true"
-                @mouseleave="news.show=false">
+            <li class="list-group-item list-gorup-item-action p-1 new" v-for="news of newss.data"
+                @mouseover="news.show=true" @mouseleave="news.show=false">
                 @{{ news . short }}
                 <div class="border border-dark rounded-shadow text-white offset-4 w-75 bg-secondary text-5 position-absolute"
                     style="z-index:1" v-show="news.show">
@@ -27,25 +27,14 @@
     <script>
         const app = {
             data() {
-                const site = JSON.parse('{!!  json_encode($site) !!}')
-                const menus = JSON.parse('{!!  $menus ??
-                    '
-                    ' !!}')
-                const images = JSON.parse('{!!  json_encode($images) ??
-                    '
-                    ' !!}')
-                const mvims = JSON.parse('{!!  $mvims ??
-                    '
-                    ' !!}')
-                const newss = JSON.parse('{!!  json_encode($news) ??
-                    '
-                    ' !!}')
+
                 return {
-                    menus,
-                    images,
-                    mvims,
-                    newss,
-                    site
+                    menus: null,
+                    images: null,
+                    mvims: null,
+                    newss: null,
+                    site: null,
+                    show: false,
                 }
             },
             methods: {
@@ -73,6 +62,16 @@
                 }
             },
             mounted() {
+                axios.get("/api")
+                    .then((res) => {
+                        console.log(res.data)
+                        this.site = res.data.site
+                        this.menus = res.data.menus
+                        this.images = res.data.images
+                        this.newss = res.data.news
+                        this.mvims = res.data.mvims
+                        this.show = true
+                    })
                 let m = 1
                 setInterval(() => {
                     this.mvims.map((mv, idx) => {

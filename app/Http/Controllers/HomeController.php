@@ -20,6 +20,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        return view('main',$this->home());
+    }
+
+    public function home(){
         $this->sideBar();
 
         $mvims = Mvim::select('id', 'img')->where('sh', 1)->get()->map(function ($val, $idx) {
@@ -46,7 +50,7 @@ class HomeController extends Controller
         $this->view['news']['data'] = $news;
 
 
-        return view('main', $this->view);
+        return $this->view;
     }
 
     //把畫面両側功能的程式拉出来再做一個方法給別的controller継承
