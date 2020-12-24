@@ -16344,27 +16344,67 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup(props) {
     // console.log(props.news.more);
     var title = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("最新消息");
+    var news = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(new Array());
+    var more = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({});
+    var paginate = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
+      total: 0,
+      div: 5,
+      links: [],
+      items: [],
+      prev: 0,
+      next: 0,
+      pages: 0,
+      start: 1
+    });
+
+    var page = function page(p) {
+      paginate.prev = p - 1 > 0 ? p - 1 : 0;
+      paginate.next = p + 1 <= paginate.pages ? p + 1 : 0;
+      paginate.start = (p - 1) * paginate.div + 1;
+      news.value = paginate.items.filter(function (item, idx) {
+        if (idx + 1 >= paginate.start && idx + 1 <= p * paginate.div) {
+          return item;
+        }
+      });
+    };
+
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(function () {
       switch (props.route) {
         case "index":
           title.value = "最新消息區";
-          axios.get("/api/news/index").then(function (res) {
-            console.log(res);
-          });
           break;
 
         case "news":
           title.value = "更多最新消息區"; //   props.news.more.show = false;
 
-          axios.get("api/news/all").then(function (res) {
-            console.log(res);
-          });
           break;
       }
+
+      axios.get("api/news/".concat(props.route)).then(function (res) {
+        news.value = res.data.news;
+        more.value = res.data.more;
+
+        if (res.data.news.length > 5) {
+          paginate.total = res.data.news.length;
+          paginate.pages = Math.ceil(paginate.total / paginate.div);
+          paginate.items = res.data.news;
+
+          for (var i = 1; i <= paginate.pages; i++) {
+            paginate.links.push(i);
+          } // console.log(paginate)
+
+
+          page(1);
+        }
+      });
     });
     return {
       title: title,
-      props: props
+      props: props,
+      news: news,
+      more: more,
+      paginate: paginate,
+      page: page
     };
   }
 });
@@ -16516,10 +16556,19 @@ var _hoisted_4 = {
     "z-index": "1"
   }
 };
+var _hoisted_5 = {
+  "class": "d-flex justify-center p-2"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.title), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.title) + " ", 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"float-right\" :href=\"news.more.href\" v-if=\"news.more.show\"\r\n        >More...</a\r\n      > ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.news.data, function (ns, idx) {
+  ), $setup.more.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+    key: 0,
+    "class": "float-right",
+    href: $setup.more.href
+  }, "More...", 8
+  /* PROPS */
+  , ["href"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.news, function (ns, idx) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       "class": "list-group-item list-gorup-item-action p-1 new",
       onMouseover: function onMouseover($event) {
@@ -16529,7 +16578,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return ns.show = false;
       },
       key: ns.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(idx + 1 + ". " + ns["short"]) + " ", 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.paginate.start + idx + ". " + ns["short"]) + " ", 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("pre", {
       "class": "text-white",
@@ -16543,7 +16592,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onMouseover", "onMouseleave"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]);
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [$setup.paginate.prev > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+    key: 0,
+    "class": "d-block p-1 border",
+    href: "#",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $setup.page($setup.paginate.prev);
+    })
+  }, " < ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.paginate.links, function (p, idx) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+      "class": "d-block p-1 border",
+      href: "#",
+      onClick: function onClick($event) {
+        return $setup.page(p);
+      },
+      key: idx
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(p), 9
+    /* TEXT, PROPS */
+    , ["onClick"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  )), $setup.paginate.next > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+    key: 1,
+    "class": "d-block p-1 border",
+    href: "#",
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $setup.page($setup.paginate.next);
+    })
+  }, " > ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
 }
 
 /***/ }),
