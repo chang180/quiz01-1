@@ -32,10 +32,8 @@
         @auth
             <a href="/admin" class="btn btn-success py-3 w-100 my-2">返回管理({{ $user->acc }}) </a>
         @endauth
-        <div class="text-center py-2 border-bottom my-1">校園映像區@{{ wtf }} </div>
-        <div class="up" @click="switchImg('up')"></div>
-        <div class="img" v-for='img of images.data' v-show="img.show"><img :src="img.img" class="mx-auto"></div>
-        <div class="down" @click="switchImg('down')"></div>
+        
+        <images :images="images" title="校園映像"></images>
     </div>
 @endsection
 
