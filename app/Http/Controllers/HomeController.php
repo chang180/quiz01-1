@@ -35,7 +35,7 @@ class HomeController extends Controller
             if ($idx > 4) {
                 $this->view['news']['more'] = ['show'=>true,'href'=>'/news'];
             } else {
-                $val->short = mb_substr(str_replace("\r\n", " ", $val->text), 0, 25, 'utf8') . "...";
+                $val->short = mb_substr(str_replace("\r\n", " ", $val->text), 0, 20, 'utf8') . "...";
                 $val->text = str_replace("\r\n", " ", nl2br($val->text));
                 $val->show=false;
                 

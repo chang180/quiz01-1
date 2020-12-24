@@ -3,10 +3,12 @@ require('./bootstrap');
 import { createApp } from 'vue'
 import Marquee from './components/Marquee.vue'
 import Images from './components/Images.vue'
+import Mvims from './components/Mvims.vue'
+import News from './components/News.vue'
 
 
 const app = {
-    components: { 'marquee': Marquee, 'images': Images },
+    components: { 'marquee': Marquee, 'images': Images, 'mvims': Mvims, 'news': News, },
 
     data() {
 
@@ -14,7 +16,7 @@ const app = {
             menus: null,
             images: null,
             mvims: null,
-            newss: null,
+            // news: null,
             site: null,
             show: false,
         }
@@ -27,18 +29,11 @@ const app = {
                 this.site = res.data.site
                 this.menus = res.data.menus
                 this.images = res.data.images
-                this.newss = res.data.news
+                    // this.news = res.data.news
                 this.mvims = res.data.mvims
                 this.show = true
             })
-        let m = 1
-        setInterval(() => {
-            this.mvims.map((mv, idx) => {
-                mv.show = (idx == m) ? true : false
-                return mv
-            })
-            m = (m + 1) % this.mvims.length
-        }, 3000);
+
     }
 }
 
