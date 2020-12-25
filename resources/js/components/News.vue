@@ -32,7 +32,8 @@
         &lt;
       </a>
       <a
-        class="d-block p-1 border"
+        class="d-block p-1 border self-center"
+        :class="paginate.font[p]"
         href="#"
         @click="page(p)"
         v-for="(p, idx) of paginate.links"
@@ -69,11 +70,14 @@ export default {
       next: 0,
       pages: 0,
       start: 1,
+      font:[],
     });
     const page = (p) => {
-      paginate.prev = p - 1 > 0 ? p - 1 : 0;
-      paginate.next = p + 1 <= paginate.pages ? p + 1 : 0;
-      paginate.start = (p - 1) * paginate.div + 1;
+      paginate.prev = p - 1 > 0 ? p - 1 : 0
+      paginate.next = p + 1 <= paginate.pages ? p + 1 : 0
+      paginate.start = (p - 1) * paginate.div + 1
+      paginate.font=[]
+      paginate.font[p]='text-xl'
 
       news.value = paginate.items.filter((item, idx) => {
         if (idx + 1 >= paginate.start && idx + 1 <= p * paginate.div) {
