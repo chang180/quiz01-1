@@ -5,10 +5,14 @@ import Marquee from './components/Marquee.vue'
 import Images from './components/Images.vue'
 import Mvims from './components/Mvims.vue'
 import News from './components/News.vue'
+import Menus from './components/Menus.vue'
+import LoginBtn from './components/LoginBtn.vue'
+import Login from './components/Login.vue'
+
 
 
 const app = {
-    components: { 'marquee': Marquee, 'images': Images, 'mvims': Mvims, 'news': News, },
+    components: { 'marquee': Marquee, 'images': Images, 'mvims': Mvims, 'news': News, 'menus': Menus, 'login-btn': LoginBtn, 'login': Login },
 
     data() {
 
@@ -19,6 +23,7 @@ const app = {
             // news: null,
             site: null,
             show: false,
+            auth: null,
         }
     },
 
@@ -32,6 +37,7 @@ const app = {
                     // this.news = res.data.news
                 this.mvims = res.data.mvims
                 this.show = true
+                this.auth = res.data.auth
             })
 
     }

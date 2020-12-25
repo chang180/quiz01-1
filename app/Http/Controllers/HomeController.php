@@ -39,6 +39,7 @@ class HomeController extends Controller
                 $val->text = str_replace("\r\n", " ", nl2br($val->text));
                 $val->show=false;
                 
+
                 $this->view['news']['more'] = ['show'=>false];
                 return $val;
             }
@@ -48,7 +49,22 @@ class HomeController extends Controller
 
         $this->view['mvims'] = $mvims;
         $this->view['news']['data'] = $news;
+if(Auth::check()){
 
+    $this->view['auth']=[
+        'href'=>'/admin',
+        'class'=>'btn-success',
+        'text'=>'返回管理',
+        'user'=>Auth::user()->acc,
+    ];
+}else{
+    $this->view['auth']=[
+        'href'=>'/login',
+        'class'=>'btn-primary',
+        'text'=>'管理登入',
+        'user'=>'訪客',
+    ];
+}
 
         return $this->view;
     }
