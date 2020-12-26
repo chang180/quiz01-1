@@ -8,7 +8,7 @@
       @mouseleave="menu.show = false"
       :key="menu.id"
     >
-      <a :href="menu.href"> {{ menu.text }} </a>
+      <router-link :to="menu.href"> {{ menu.text }} </router-link>
       <ul
         class="list-group subs offset-4 w-100"
         v-if="menu.subs.length > 0"
@@ -19,7 +19,7 @@
           v-for="sub of menu.subs"
           :key="sub.id"
         >
-          <a class="text-white" :href="sub.href">{{ sub.text }} </a>
+          <router-link class="text-white" :to="sub.href">{{ sub.text }} </router-link>
         </li>
       </ul>
     </li>

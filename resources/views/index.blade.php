@@ -16,7 +16,7 @@
 <body>
     <div class="container mx-auto" id="app">
         <div class="header w-100" v-if="show">
-            <a href="/" :title="site.title.text"><img :src="site.title.img" class="w-100"></a>
+            <router-link :to="'/'" :title="site.title.text"><img :src="site.title.img" class="w-100"></router-link>
         </div>
         <div class="main d-flex" style="height:568px;" v-if="show">
             <div class="menu col-3">
@@ -24,10 +24,10 @@
             </div>
             <div class="main col-6">
                 <marquee>@{{ site . ads }}</marquee>
-                <router-link to="/">home</router-link>
-                <router-link to="/news">news</router-link>
-                <router-link to="/login">login</router-link>
-                <router-view></router-view>
+
+
+                <router-view :mvims='mvims' name='mvim'></router-view>
+                <router-view ></router-view>
             </div>
             <div class="right col-3">
                 <login-btn :auth="auth"></login-btn>
